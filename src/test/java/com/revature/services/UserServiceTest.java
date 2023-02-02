@@ -2,6 +2,8 @@ package com.revature.services;
 
 import com.revature.dtos.RegisterRequest;
 import com.revature.dtos.UpdateUserRequest;
+import com.revature.dtos.UserResponse;
+import com.revature.exceptions.InvalidUserInputException;
 import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.User;
 import com.revature.repositories.UserRepository;
@@ -11,21 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpSession;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
-
-
-import java.util.Optional;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,12 +33,11 @@ class UserServiceTest {
 
     @BeforeEach
     public void setUp() {
-        user1 = new User(1, "Valid", "Valid", "Valid", "Valid", false, true, null);
-        registerRequest = new RegisterRequest("Valid", "Valid", "Valid", "Valid");
-        updateUserRequest = new UpdateUserRequest("Valid", "Valid", "Valid", "Valid");
+        user1 = new User(1, "test@gmail.com", "Password123!", "Test", "User", false, true, "user1Token");
+        registerRequest = new RegisterRequest("new@gmail.com", "Password123!", "New", "User");
+        updateUserRequest = new UpdateUserRequest("Updated", "New", "update@gmail.com", "!Test1234");
 
     }
-
 
     @AfterEach
     public void tearDown() {
@@ -58,103 +46,261 @@ class UserServiceTest {
         updateUserRequest = null;
     }
 
-    //PASSES!
     @Test
-    @DisplayName("Test should pass when registering user with valid input data")
-    public void testRegisterUser_givenValidInput() {
+    @DisplayName("Find User By Credentials Test-Positive")
+    public void findByCredentialsPositiveTest() {
+        when(userRepository.findByEmailAndPassword(user1.getEmail(), user1.getPassword())).thenReturn(Optional.of(user1));
 
-        //Use thenThrows to test for errors and exceptions thrown during method execution
+        Optional<User> savedUser = userService.findByCredentials("test@gmail.com", "Password123!");
+
+        verify(userRepository, times(1)).findByEmailAndPassword(anyString(),anyString());
+        assertNotNull(savedUser);
+    }
+
+    @Test
+    @DisplayName("Find User By Credentials Test-Negative")
+    public void findByCredentialsNegativeTest() {
+        when(userRepository.findByEmailAndPassword(user1.getEmail(), "wrongPassword")).thenReturn(null);
+
+        Optional<User> savedUser = userService.findByCredentials("test@gmail.com", "wrongPassword");
+
+        verify(userRepository, times(1)).findByEmailAndPassword(anyString(),anyString());
+        assertNull(savedUser);
+    }
+
+    @Test
+    @DisplayName("Find User By Email Test-Positive")
+    public void findByEmailPositiveTest() {
+        when(userRepository.checkEmail(user1.getEmail())).thenReturn(Optional.of(user1));
+
+        Optional<User> savedUser = userService.findByEmail(user1.getEmail());
+
+        verify(userRepository, times(1)).checkEmail(anyString());
+        assertNotNull(savedUser);
+    }
+
+    @Test
+    @DisplayName("Find User By Email Test-Negative")
+    public void findByEmailNegativeTest() {
+        when(userRepository.checkEmail("wrong@gmail.com")).thenReturn(null);
+
+        Optional<User> savedUser = userService.findByEmail("wrong@gmail.com");
+
+        verify(userRepository, times(1)).checkEmail(anyString());
+        assertNull(savedUser);
+    }
+
+    @Test
+    @DisplayName("Find User By ResetPasswordToken Test-Positive")
+    public void findByResetPasswordTokenPositiveTest() {
+        when(userRepository.findByResetPasswordToken(user1.getResetPasswordToken())).thenReturn(Optional.of(user1));
+
+        Optional<User> savedUser = userService.findByResetPasswordToken(user1.getResetPasswordToken());
+
+        verify(userRepository, times(1)).findByResetPasswordToken(anyString());
+        assertNotNull(savedUser);
+    }
+
+    @Test
+    @DisplayName("Find User By ResetPasswordToken Test-Negative")
+    public void findByResetPasswordTokenNegativeTest() {
+        when(userRepository.findByResetPasswordToken("nonexistentToken")).thenReturn(null);
+
+        Optional<User> savedUser = userService.findByResetPasswordToken("nonexistentToken");
+
+        verify(userRepository, times(1)).findByResetPasswordToken(anyString());
+        assertNull(savedUser);
+    }
+
+
+    @Test
+    @DisplayName("Update Reset Password Token Test-Positive")
+    public void updateResetPasswordTokenPositiveTest() {
+        when(userRepository.checkEmail(user1.getEmail())).thenReturn(Optional.of(user1));
+        userService.updateResetPasswordToken("newToken", user1.getEmail());
+
+        verify(userRepository, times(1)).checkEmail(anyString());
+        assertEquals("newToken", user1.getResetPasswordToken());
+    }
+
+    @Test
+    @DisplayName("Update Reset Password Token Test-Negative")
+    public void updateResetPasswordTokenNegativeTest() {
+        boolean thrown = false;
+
+        try {
+            userService.updateResetPasswordToken("newToken", "wrong@gmail.com");
+        } catch (ResourceNotFoundException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
+
+
+    @Test
+    @DisplayName("Reset Password Test")
+    public void resetPasswordTest() {
+        userService.resetPassword(user1, "newPassword");
+        verify(userRepository, times(1)).save(any());
+        assertEquals("newPassword", user1.getPassword());
+    }
+
+    @DisplayName("Save user Test")
+    @Test
+    public void saveUserTest() {
+        when(userRepository.save(user1)).thenReturn(user1);
+
+        User savedUser = userService.save(user1);
+
+        assertNotNull(savedUser);
+        verify(userRepository, times(1)).save(any());
+    }
+
+    @DisplayName("Email Availability Test-Positive")
+    @Test
+    public void isEmailAvailablePositiveTest() {
+        boolean emailAvailable = userService.isEmailAvailable("available@gmail.com");
+        verify(userRepository, times(1)).checkEmail(any());
+        assertTrue(emailAvailable);
+    }
+    @DisplayName("Email Availability Test-Negative")
+    @Test
+    public void isEmailAvailableNegativeTest() {
+        when(userRepository.checkEmail(user1.getEmail())).thenReturn(Optional.of(user1));
+
+        boolean emailNotAvailable = false;
+        try{
+            userService.isEmailAvailable(user1.getEmail());
+        } catch (InvalidUserInputException e){
+            emailNotAvailable = true;
+        }
+        verify(userRepository, times(1)).checkEmail(any());
+        assertTrue(emailNotAvailable);
+    }
+
+    @Test
+    @DisplayName("Register User Test-Positive")
+    public void registerUserPositiveTest() {
+
         when(userRepository.save(any())).thenReturn(user1);
         userService.registerUser(registerRequest);
         verify(userRepository, times(1)).save(any());
     }
 
-
-//    @Test
-//    @DisplayName("Test should pass when updating a user given valid input")
-//    public void testUpdateUser_givenValidInput(){
-//
-//        when(userRepository.findById().thenReturn(user1);
-//        userService.update(updateUserRequest, user1);
-//        verify(userRepository, times(1)).save(any());
-//    }
-
-    // JUnit test for getEmployeeById method
-    @DisplayName("JUnit test for findUserById method")
     @Test
-    public void givenUserId_whenGetUserById_thenReturnUserObject() {
-        // given
-        given(userRepository.findById(1)).willReturn(Optional.of(user1));
-
-        // when
-        User savedUSer = userService.findUserById(user1.getId());
-
-        // then
-        assertThat(savedUSer).isNotNull();
-
+    @DisplayName("Register User Test-Negative")
+    public void registerUserNegativeTest() {
+        RegisterRequest invalidRequest = new RegisterRequest("invalidEmail", "invalidPassword", "", "");
+        boolean nullUser = false;
+        try{
+            userService.registerUser(invalidRequest);
+        } catch(NullPointerException e){
+            nullUser = true;
+        }
+        assertTrue(nullUser);
     }
 
-    // JUnit test for update method
-    @DisplayName("JUnit test for update method")
+
     @Test
-    public void givenUserObject_whenUpdateUser_thenReturnUpdatedUser() {
-        // given - precondition or setup
-        given(userRepository.findById(user1.getId())).willReturn(Optional.ofNullable(user1));
+    @DisplayName("Update user test- Positive")
+    public void updateUserPositiveTest() {
+        when(userRepository.findById(user1.getId())).thenReturn(Optional.of(user1));
 
-
-        // when -  action or the behaviour that we are going test
         userService.update(updateUserRequest, user1);
 
-        // then - verify the output
-        assertThat(user1.getFirstName()).isEqualTo(updateUserRequest.getFirstName());
-        assertThat(user1.getLastName()).isEqualTo(updateUserRequest.getLastName());
-        assertThat(user1.getPassword()).isEqualTo(updateUserRequest.getPassword());
+        verify(userRepository, times(1)).findById(anyInt());
+        assertEquals(user1.getFirstName(), updateUserRequest.getFirstName());
+        assertEquals(user1.getLastName(), updateUserRequest.getLastName());
+        assertEquals(user1.getPassword(), updateUserRequest.getPassword());
+    }
+
+
+    @Test
+    @DisplayName("Update user test- Negative")
+    public void updateUserNegativeTest() {
+        when(userRepository.findById(user1.getId())).thenReturn(Optional.of(user1));
+        // update request with invalid password
+        UpdateUserRequest invalidUpdate = new UpdateUserRequest("Valid","Valid", "valid@email.com","invalid");
+        boolean rejectInvalidUpdate = false;
+        try{
+            userService.update(invalidUpdate, user1);
+        } catch (InvalidUserInputException e){
+            rejectInvalidUpdate = true;
+        }
+
+        assertTrue(rejectInvalidUpdate);
 
     }
 
-    @DisplayName("JUnit test for deactivate method")
-    @Test
-    public void givenUserObject_whenDeactivateUser_thenReturnDeactivatedUser() {
-        // given - precondition or setup
-        given(userRepository.findById(1)).willReturn(Optional.ofNullable(user1));
 
-        // when -  action or the behaviour that we are going test
+    @Test
+    @DisplayName("Deactivate Current User Test")
+    public void deactivateCurrentUserTest() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(user1));
+
         userService.deactivate(user1);
 
-        // then - verify the output
-        verify(userRepository, times(1)).deactivateUser(user1.getId());
+        verify(userRepository, times(1)).findById(anyInt());
+        verify(userRepository, times(1)).deactivateUser(anyInt());
 
     }
 
-    @DisplayName("JUnit test for save method")
     @Test
-    public void givenUserObject_whenSaveUser_thenReturnUserObject() {
-        // given - precondition or setup
-        given(userRepository.save(user1)).willReturn(user1);
+    @DisplayName("Deactivate Specific User Test")
+    public void deactivateSpecificUserTest() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(user1));
 
-        System.out.println(userRepository);
-        System.out.println(userService);
+        userService.deactivate(user1);
 
-        // when -  action or the behaviour that we are going test
-        User savedUser = userService.save(user1);
+        verify(userRepository, times(1)).findById(anyInt());
+        verify(userRepository, times(1)).deactivateUser(anyInt());
 
-        System.out.println(savedUser);
-        // then - verify the output
-        assertThat(savedUser).isNotNull();
     }
 
-    // JUnit test for getEmployeeById method
-    @DisplayName("JUnit test for findByCredentials method")
+
     @Test
-    public void givenUserEmailAndPassword_whenGetUserEmailAndPassword_thenReturnUserObject() {
-        // given
-        given(userRepository.findByEmailAndPassword(user1.getEmail(), user1.getPassword())).willReturn(Optional.of(user1));
-
-        // when
-        Optional<User> savedUser = userService.findByCredentials("Valid", "Valid");
-
-        // then
-        assertThat(savedUser).isNotNull();
-
+    @DisplayName("Find User Response By Id Test-Positive")
+    public void findUserResponseByIdTest() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(user1));
+        UserResponse userResponse = userService.findById(user1.getId());
+        verify(userRepository, times(1)).findById(anyInt());
+        assertNotNull(userResponse);
     }
+
+    @Test
+    @DisplayName("Find User Response By Id Test-Negative")
+    public void findUserResponseByIdNegativeTest() {
+        when(userRepository.findById(999)).thenThrow(ResourceNotFoundException.class);
+        boolean notFound = false;
+        try{
+            userService.findById(999);
+        } catch (ResourceNotFoundException e){
+            notFound = true;
+        }
+        assertTrue(notFound);
+    }
+    @Test
+    @DisplayName("Find User By Id Test-Positive")
+    public void findUserByIdTest() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(user1));
+        User foundUser = userService.findUserById(user1.getId());
+        verify(userRepository, times(1)).findById(anyInt());
+        assertNotNull(foundUser);
+    }
+
+    @Test
+    @DisplayName("Find User By Id Test-Negative")
+    public void findUserByIdNegativeTest() {
+        when(userRepository.findById(999)).thenThrow(ResourceNotFoundException.class);
+        boolean notFound = false;
+        try{
+            userService.findUserById(999);
+        } catch (ResourceNotFoundException e){
+            notFound = true;
+        }
+        verify(userRepository, times(1)).findById(anyInt());
+        assertTrue(notFound);
+    }
+
+
 }
