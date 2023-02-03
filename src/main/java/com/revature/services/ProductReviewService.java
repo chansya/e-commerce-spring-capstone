@@ -81,9 +81,9 @@ public class ProductReviewService {
 
     public ProductReview save(ProductReviewRequest productReview, User user) {
         try {
-            if(productReview.getRating()<1||productReview.getRating()>5||productReview.getComment().trim().equals("")||!canPost(productReview.getPostId(),user.getId()))
-            {return null;}
-
+            if(productReview.getRating()<1||productReview.getRating()>5||productReview.getComment().trim().equals("")||!canPost(productReview.getPostId(),user.getId())) {
+                return null;
+            }
 
             return productReviewRepository.save(new ProductReview(
                     productReview,productService.findById(productReview.getPostId()).get(),user));

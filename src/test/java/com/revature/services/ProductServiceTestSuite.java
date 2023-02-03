@@ -5,6 +5,7 @@ import com.revature.models.Product;
 import com.revature.repositories.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ import static org.mockito.Mockito.*;
 
 public class ProductServiceTestSuite {
 
-    static ProductService sut;
-    static ProductRepository mockProductRepository;
+    public ProductService sut;
+    public ProductRepository mockProductRepository;
 
-    @BeforeAll
-    public static void testPrep(){
+    @BeforeEach
+    public  void testPrep(){
         mockProductRepository = mock(ProductRepository.class);
         sut = new ProductService(mockProductRepository);
     }
@@ -42,7 +43,8 @@ public class ProductServiceTestSuite {
             Assertions.assertInstanceOf(Product.class, p);
         }
 
-        verify(mockProductRepository, times(1));
+        verify(mockProductRepository, times(1)).findAllActive();
+        //verify needs method verified specified -- OR change before all to before each
     }
 
     @Test
@@ -60,7 +62,7 @@ public class ProductServiceTestSuite {
         Product returnedProduct = sut.findById(1).get();
 
         Assertions.assertInstanceOf(Product.class, returnedProduct);
-        verify(mockProductRepository, times(1));
+        verify(mockProductRepository, times(1)).findActiveById(anyInt());
     }
 
     @Test
@@ -92,7 +94,7 @@ public class ProductServiceTestSuite {
             Assertions.assertInstanceOf(Product.class, p);
         }
 
-        verify(mockProductRepository, times(1));
+        verify(mockProductRepository, times(1)).findByKeyword(anyString());
     }
 
     @Test
@@ -110,7 +112,7 @@ public class ProductServiceTestSuite {
         Product returnedProduct = sut.save(newProduct);
 
         Assertions.assertInstanceOf(Product.class, returnedProduct);
-        verify(mockProductRepository, times(1));
+        verify(mockProductRepository, times(1)).save(any());
     }
 
     @Test
@@ -146,7 +148,7 @@ public class ProductServiceTestSuite {
             Assertions.assertInstanceOf(Product.class, p);
         }
 
-        verify(mockProductRepository, times(1));
+        verify(mockProductRepository, times(1)).saveAll(any());
     }
 
     @Test
@@ -164,6 +166,7 @@ public class ProductServiceTestSuite {
 
         sut.delete(1);
 
-        verify(mockProductRepository, times(2));
+        verify(mockProductRepository, times(1)).findActiveById(anyInt());
+        verify(mockProductRepository, times(1)).save(any());
     }
 }

@@ -22,10 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -117,21 +117,29 @@ class ProductReviewTest {
 
     @Test
     public void testSaveProductReview_givenValidInput(){
-
+        //has three outcomes -- returns null if input is empty, productReviewRepository.save/productRepository.findActive not invoked
+        //returns product review if good,  Throws NoSuchElementException if item not found
+        when(productReviewRepository.canPost(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(productReviewRepository.save(any())).thenReturn(productReview1);
-        when(productRepository.findById(any())).thenReturn(Optional.of((productValid1)));
+        when(productRepository.findActiveById(anyInt())).thenReturn(Optional.of((productValid1)));
         productReviewService.save(productReviewRequest1, userValid1);
         verify(productReviewRepository,times(1)).save(any());
+        verify(productRepository, times(1)).findActiveById(anyInt());
 
     }
 
     @Test
     public void testSaveProductReview_givenInvalidInput(){
-
         ProductReview productReviewTemp =  productReviewService.save(productReviewRequest2, userValid1);
         assertNull(productReviewTemp);
     }
 
+    @Test
+    public void testSaveProductReview_noSuchElementExceptionTest(){
+        //method should handle exception and return null
+        when(productReviewRepository.canPost(anyInt(), anyInt())).thenThrow(NoSuchElementException.class);
+        assertNull(productReviewService.save(productReviewRequest1, userValid1));
+    }
 
     @Test
     public void testFindAllProductReviews() {

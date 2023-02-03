@@ -1,0 +1,231 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > OrderService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.services</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderService (com.revature.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderService</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (2/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.9%
+  </span>
+  <span class="absValue">
+    (5/36)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$1o6iWBCd</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$9eKQ5RxC</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$abEc3KAd</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$GvgNN4H6</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$tLFrLIGS</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$Yhcmo9zf</td>
+  </tr>
+  <tr>
+    <td class="name">OrderService$MockitoMock$988285294$auxiliary$YRXGUq97</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (2/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.9%
+  </span>
+  <span class="absValue">
+    (5/36)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.services;
+&nbsp;
+&nbsp;import com.revature.dtos.CreateOrderRequest;
+&nbsp;import com.revature.dtos.EditOrderRequest;
+&nbsp;import com.revature.dtos.OrderResponse;
+&nbsp;import com.revature.exceptions.ResourceNotFoundException;
+&nbsp;import com.revature.exceptions.UnauthorizedException;
+&nbsp;import com.revature.models.Order;
+&nbsp;import com.revature.models.Payment;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.repositories.OrderRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.sql.Date;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.function.Predicate;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class OrderService {
+&nbsp;
+&nbsp;    private final OrderRepository orderRepository;
+&nbsp;    private final UserService userService;
+&nbsp;    private final PaymentService paymentService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public OrderService(OrderRepository orderRepository, UserService userService, PaymentService paymentService) {</b>
+&nbsp;
+<b class="fc">&nbsp;        this.orderRepository = orderRepository;</b>
+<b class="fc">&nbsp;        this.userService = userService;</b>
+<b class="fc">&nbsp;        this.paymentService = paymentService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public OrderResponse createOrder(CreateOrderRequest createOrderRequest, User user) {
+<b class="nc">&nbsp;        Order newOrder = new Order();</b>
+<b class="nc">&nbsp;        Payment foundPayment = paymentService.findPaymentById(createOrderRequest.getPaymentId());</b>
+<b class="nc">&nbsp;        newOrder.setUserId(user);</b>
+<b class="nc">&nbsp;        newOrder.setPaymentId(foundPayment);</b>
+<b class="nc">&nbsp;        newOrder.setOrderDate(new Date(System.currentTimeMillis()));</b>
+<b class="nc">&nbsp;        newOrder.setShipmentAddress(createOrderRequest.getShipmentAddress());</b>
+&nbsp;
+<b class="nc">&nbsp;        orderRepository.save(newOrder);</b>
+&nbsp;
+<b class="nc">&nbsp;        OrderResponse orderResponse = new OrderResponse(newOrder);</b>
+&nbsp;
+<b class="nc">&nbsp;        return orderResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public List&lt;OrderResponse&gt; findAll() {
+<b class="nc">&nbsp;        ArrayList&lt;OrderResponse&gt; orderResponses = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;Order&gt; orders = orderRepository.findAll();</b>
+<b class="nc">&nbsp;        for (Order o : orders) {</b>
+<b class="nc">&nbsp;            OrderResponse orderResponse = new OrderResponse(o);</b>
+<b class="nc">&nbsp;            orderResponses.add(orderResponse);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return orderResponses;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public List&lt;OrderResponse&gt; findAllUserOrders(User user) {
+<b class="nc">&nbsp;        List&lt;OrderResponse&gt; orderResponses = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;Order&gt; orders = orderRepository.findByUserId(user);</b>
+<b class="nc">&nbsp;        orderResponses = orders.stream().map(OrderResponse::new).collect(Collectors.toList());</b>
+<b class="nc">&nbsp;        return orderResponses;</b>
+&nbsp;    }
+&nbsp;    @Transactional
+&nbsp;    public Order findById(int id) {
+<b class="fc">&nbsp;        return orderRepository.findById(id).orElseThrow(ResourceNotFoundException::new);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public OrderResponse update(EditOrderRequest editOrderRequest, User user) throws UnauthorizedException {
+<b class="nc">&nbsp;        System.out.println(editOrderRequest.getOrderId());</b>
+<b class="nc">&nbsp;        Order foundOrder = findById(editOrderRequest.getOrderId());</b>
+<b class="nc">&nbsp;        Predicate&lt;String&gt; notNullOrEmpty = (str) -&gt; str != null &amp;&amp; !str.trim().equals(&quot;&quot;);</b>
+<b class="nc">&nbsp;        if (foundOrder.getUserId().getId() != user.getId()) {</b>
+<b class="nc">&nbsp;            throw new UnauthorizedException(&quot;Not authorized to change this order.&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (notNullOrEmpty.test(editOrderRequest.getPaymentId()) &amp;&amp; notNullOrEmpty.test(editOrderRequest.getPaymentId())) {</b>
+<b class="nc">&nbsp;            foundOrder.setPaymentId(paymentService.findPaymentById(editOrderRequest.getPaymentId()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (editOrderRequest.getShipmentAddress() != null &amp;&amp; editOrderRequest.getShipmentAddress() != &quot;&quot;) {</b>
+<b class="nc">&nbsp;            foundOrder.setShipmentAddress(editOrderRequest.getShipmentAddress());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        OrderResponse orderResponse = new OrderResponse(foundOrder);</b>
+<b class="nc">&nbsp;        return orderResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-02 19:42</div>
+</div>
+</body>
+</html>

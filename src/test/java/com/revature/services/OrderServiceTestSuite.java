@@ -38,7 +38,7 @@ public class OrderServiceTestSuite {
         List<Order> orders = new ArrayList<>();
 
         sut.findAll();
-        verify(mockOrderRepository, times(1));
+        verify(mockOrderRepository, times(1)).findAll();
     }
 
     @Test
@@ -52,7 +52,7 @@ public class OrderServiceTestSuite {
         Order actualOrder = sut.findById(1);
 
         Assertions.assertInstanceOf(Order.class, actualOrder);
-        verify(mockOrderRepository, times(1));
+        verify(mockOrderRepository, times(1)).findById(anyInt());
     }
 
     @Test
@@ -61,6 +61,6 @@ public class OrderServiceTestSuite {
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> sut.findById(-10));
 
-        verify(mockOrderRepository, times(1));
+        verify(mockOrderRepository, times(1)).findById(anyInt());
     }
 }

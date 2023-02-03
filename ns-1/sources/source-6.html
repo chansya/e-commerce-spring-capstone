@@ -1,0 +1,187 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.services</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductService (com.revature.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$6P39NecK</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$b7qjMxhd</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$CLIzIbJq</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$gvpLuUqu</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$qB21mj5b</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$Twd5dMLN</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$udswAHLd</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$453954514$auxiliary$usQnAPsX</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.services;
+&nbsp;
+&nbsp;import com.revature.dtos.ProductInfo;
+&nbsp;import com.revature.models.Product;
+&nbsp;import com.revature.repositories.ProductRepository;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class ProductService {
+&nbsp;
+&nbsp;    private final ProductRepository productRepository;
+&nbsp;
+<b class="fc">&nbsp;    public ProductService(ProductRepository productRepository) {</b>
+<b class="fc">&nbsp;        this.productRepository = productRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Product&gt; findAll() {
+<b class="fc">&nbsp;        return productRepository.findAllActive();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Product&gt; findById(int id) {
+<b class="fc">&nbsp;        return productRepository.findActiveById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Product&gt; findByKeyword(String keyword){
+<b class="fc">&nbsp;        return productRepository.findByKeyword(&quot;%&quot; + keyword + &quot;%&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Product save(Product product) {
+<b class="fc">&nbsp;        return productRepository.save(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Product&gt; saveAll(List&lt;Product&gt; productList, List&lt;ProductInfo&gt; metadata) {
+<b class="fc">&nbsp;        return productRepository.saveAll(productList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void delete(int id) {
+<b class="fc">&nbsp;        Optional&lt;Product&gt; p = findById(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (p.isPresent()) {</b>
+<b class="fc">&nbsp;            Product pr = p.get();</b>
+<b class="fc">&nbsp;            pr.setActive(false);</b>
+<b class="fc">&nbsp;            save(pr);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-02 19:42</div>
+</div>
+</body>
+</html>
