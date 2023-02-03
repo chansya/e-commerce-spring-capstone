@@ -10,14 +10,17 @@ import com.revature.repositories.PaymentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.sql.Date;
 
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class PaymentServiceTestSuite {
-    private static PaymentService sut;
+    private static PaymentService paymentService;
     private static UserService userService;
     private static PaymentRepository paymentRepository;
 
@@ -26,7 +29,7 @@ public class PaymentServiceTestSuite {
         paymentRepository = mock(PaymentRepository.class);
         userService = mock(UserService.class);
 
-        sut = new PaymentService(paymentRepository, userService);
+        paymentService = new PaymentService(paymentRepository, userService);
     }
 
     @Test
@@ -36,7 +39,7 @@ public class PaymentServiceTestSuite {
         createPaymentRequest.setExpDate(new Date(System.currentTimeMillis()));
         createPaymentRequest.setCardNumber("1111111111");
         User user = new User();
-        PaymentResponse paymentResponse = sut.createPayment(createPaymentRequest, user);
+        PaymentResponse paymentResponse = paymentService.createPayment(createPaymentRequest, user);
         Assertions.assertInstanceOf(PaymentResponse.class, paymentResponse);
     }
 
@@ -55,9 +58,32 @@ public class PaymentServiceTestSuite {
         createPaymentRequest3.setExpDate(new Date(System.currentTimeMillis()));
 
         User user = new User();
-        Assertions.assertThrows(InvalidUserInputException.class, () -> sut.createPayment(createPaymentRequest1, user));
-        Assertions.assertThrows(InvalidUserInputException.class, () -> sut.createPayment(createPaymentRequest2, user));
-        Assertions.assertThrows(InvalidUserInputException.class, () -> sut.createPayment(createPaymentRequest3, user));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> paymentService.createPayment(createPaymentRequest1, user));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> paymentService.createPayment(createPaymentRequest2, user));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> paymentService.createPayment(createPaymentRequest3, user));
+    }
+
+
+    @Test
+    void testFindPaymentById(){
+        //paymentRepository.findById(1).orElseThrow(() -> new RuntimeException("No payment with this ID found."));
+        
+
+    }
+
+    @Test
+    void testUpdatePayment(){
+
+    }
+
+    @Test
+    void testDeletePayment(){
+
+    }
+
+    @Test
+    void testFindAllByUser(){
+
     }
 
 }
