@@ -88,7 +88,7 @@ public class OrderServiceTestSuite {
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> sut.findById(-10));
 
-        verify(mockOrderRepository, times(1)).findByUserId(new User());
+        verify(mockOrderRepository, times(1)).findById(anyInt());
     }
 
 

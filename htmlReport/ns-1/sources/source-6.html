@@ -24,12 +24,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <h1>Coverage Summary for Class: ProductService (com.revature.services)</h1>
 
 <table class="coverageStats">
+
 <tr>
   <th class="name">Class</th>
-<th class="coverageStat 
-">
-  Class, %
-</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -43,30 +40,67 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">ProductService</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (7/7)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/7)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/12)
+    (12/12)
   </span>
 </td>
 </tr>
-
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$6L1F1EID</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$8jKpQBBY</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$dGtVFqyg</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$GzD3maiq</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$jALVrYn4</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$KaqBBmq1</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$Pbibxj6g</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$1709370524$auxiliary$uE3XD5oA</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
 </table>
 
 <br/>
@@ -90,37 +124,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    private final ProductRepository productRepository;
 &nbsp;
-<b class="nc">&nbsp;    public ProductService(ProductRepository productRepository) {</b>
-<b class="nc">&nbsp;        this.productRepository = productRepository;</b>
+<b class="fc">&nbsp;    public ProductService(ProductRepository productRepository) {</b>
+<b class="fc">&nbsp;        this.productRepository = productRepository;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public List&lt;Product&gt; findAll() {
-<b class="nc">&nbsp;        return productRepository.findAllActive();</b>
+<b class="fc">&nbsp;        return productRepository.findAllActive();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public Optional&lt;Product&gt; findById(int id) {
-<b class="nc">&nbsp;        return productRepository.findActiveById(id);</b>
+<b class="fc">&nbsp;        return productRepository.findActiveById(id);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public List&lt;Product&gt; findByKeyword(String keyword){
-<b class="nc">&nbsp;        return productRepository.findByKeyword(&quot;%&quot; + keyword + &quot;%&quot;);</b>
+<b class="fc">&nbsp;        return productRepository.findByKeyword(&quot;%&quot; + keyword + &quot;%&quot;);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public Product save(Product product) {
-<b class="nc">&nbsp;        return productRepository.save(product);</b>
+<b class="fc">&nbsp;        return productRepository.save(product);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public List&lt;Product&gt; saveAll(List&lt;Product&gt; productList, List&lt;ProductInfo&gt; metadata) {
-<b class="nc">&nbsp;        return productRepository.saveAll(productList);</b>
+<b class="fc">&nbsp;        return productRepository.saveAll(productList);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void delete(int id) {
-<b class="nc">&nbsp;        Optional&lt;Product&gt; p = findById(id);</b>
+<b class="fc">&nbsp;        Optional&lt;Product&gt; p = findById(id);</b>
 &nbsp;
-<b class="nc">&nbsp;        if (p.isPresent()) {</b>
-<b class="nc">&nbsp;            Product pr = p.get();</b>
-<b class="nc">&nbsp;            pr.setActive(false);</b>
-<b class="nc">&nbsp;            save(pr);</b>
+<b class="fc">&nbsp;        if (p.isPresent()) {</b>
+<b class="fc">&nbsp;            Product pr = p.get();</b>
+<b class="fc">&nbsp;            pr.setActive(false);</b>
+<b class="fc">&nbsp;            save(pr);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;}
@@ -147,7 +181,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-03 15:13</div>
+    <div style="float:right;">generated on 2023-02-03 16:41</div>
 </div>
 </body>
 </html>

@@ -24,12 +24,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <h1>Coverage Summary for Class: TokenService (com.revature.services)</h1>
 
 <table class="coverageStats">
+
 <tr>
   <th class="name">Class</th>
-<th class="coverageStat 
-">
-  Class, %
-</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -43,30 +40,61 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">TokenService</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/6)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/12)
+    (12/12)
   </span>
 </td>
 </tr>
-
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082</td>
+  </tr>
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082$auxiliary$5eVRsbxp</td>
+  </tr>
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082$auxiliary$7GVt3Phx</td>
+  </tr>
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082$auxiliary$hlevQO6V</td>
+  </tr>
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082$auxiliary$lfD4q6xD</td>
+  </tr>
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082$auxiliary$LtomaLEx</td>
+  </tr>
+  <tr>
+    <td class="name">TokenService$MockitoMock$1806894082$auxiliary$NToecuaY</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
 </table>
 
 <br/>
@@ -91,33 +119,33 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final TokenValidator tokenValidator;
 &nbsp;    private final TokenGenerator tokenGenerator;
 &nbsp;
-<b class="nc">&nbsp;    public TokenService(TokenGenerator tokenGenerator, TokenValidator tokenValidator) {</b>
-<b class="nc">&nbsp;        this.tokenGenerator = tokenGenerator;</b>
-<b class="nc">&nbsp;        this.tokenValidator = tokenValidator;</b>
+<b class="fc">&nbsp;    public TokenService(TokenGenerator tokenGenerator, TokenValidator tokenValidator) {</b>
+<b class="fc">&nbsp;        this.tokenGenerator = tokenGenerator;</b>
+<b class="fc">&nbsp;        this.tokenValidator = tokenValidator;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public String generateToken(Principal subject) {
-<b class="nc">&nbsp;        if (!isPrincipalValid(subject)) throw new InvalidUserInputException(&quot;Provided with invalid principal object&quot;);</b>
-<b class="nc">&nbsp;        return tokenGenerator.createToken(subject);</b>
+<b class="fc">&nbsp;        if (!isPrincipalValid(subject)) throw new InvalidUserInputException(&quot;Provided with invalid principal object&quot;);</b>
+<b class="fc">&nbsp;        return tokenGenerator.createToken(subject);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public boolean isTokenValid(String token) {
-<b class="nc">&nbsp;        if (token == null || token.trim().equals(&quot;&quot;)) return false;</b>
-<b class="nc">&nbsp;        return tokenValidator.parseToken(token).isPresent();</b>
+<b class="fc">&nbsp;        if (token == null || token.trim().equals(&quot;&quot;)) return false;</b>
+<b class="fc">&nbsp;        return tokenValidator.parseToken(token).isPresent();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public Principal extractTokenDetails(String token) {
-<b class="nc">&nbsp;        if (token == null || token.trim().equals(&quot;&quot;)) throw new UnauthorizedException(&quot;No authentication token found on request&quot;);</b>
-<b class="nc">&nbsp;        return tokenValidator.parseToken(token).orElseThrow(InvalidTokenException::new);</b>
+<b class="fc">&nbsp;        if (token == null || token.trim().equals(&quot;&quot;)) throw new UnauthorizedException(&quot;No authentication token found on request&quot;);</b>
+<b class="fc">&nbsp;        return tokenValidator.parseToken(token).orElseThrow(InvalidTokenException::new);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public int getDefaultTokenExpiry() {
-<b class="nc">&nbsp;        return tokenValidator.getDefaultTokenExpiry();</b>
+<b class="fc">&nbsp;        return tokenValidator.getDefaultTokenExpiry();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    private boolean isPrincipalValid(Principal subject) {
-<b class="nc">&nbsp;        Predicate&lt;String&gt; notNullOrEmpty = (str) -&gt; str != null &amp;&amp; !str.trim().equals(&quot;&quot;);</b>
-<b class="nc">&nbsp;        return (subject != null &amp;&amp; notNullOrEmpty.test(Integer.toString(subject.getId())) &amp;&amp; notNullOrEmpty.test(subject.getEmail()));</b>
+<b class="fc">&nbsp;        Predicate&lt;String&gt; notNullOrEmpty = (str) -&gt; str != null &amp;&amp; !str.trim().equals(&quot;&quot;);</b>
+<b class="fc">&nbsp;        return (subject != null &amp;&amp; notNullOrEmpty.test(Integer.toString(subject.getId())) &amp;&amp; notNullOrEmpty.test(subject.getEmail()));</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -143,7 +171,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-03 15:13</div>
+    <div style="float:right;">generated on 2023-02-03 16:41</div>
 </div>
 </body>
 </html>

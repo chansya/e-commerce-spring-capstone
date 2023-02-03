@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">AuthService</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/8)
+    (8/8)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/22)
+    (22/22)
   </span>
 </td>
 </tr>
@@ -94,54 +94,54 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final SendEmailService sendEmailService;
 &nbsp;    private final TokenService tokenService;
 &nbsp;
-<b class="nc">&nbsp;    public AuthService(UserService userService, SendEmailService sendEmailService, TokenService tokenService) {</b>
-<b class="nc">&nbsp;        this.userService = userService;</b>
-<b class="nc">&nbsp;        this.sendEmailService = sendEmailService;</b>
-<b class="nc">&nbsp;        this.tokenService = tokenService;</b>
+<b class="fc">&nbsp;    public AuthService(UserService userService, SendEmailService sendEmailService, TokenService tokenService) {</b>
+<b class="fc">&nbsp;        this.userService = userService;</b>
+<b class="fc">&nbsp;        this.sendEmailService = sendEmailService;</b>
+<b class="fc">&nbsp;        this.tokenService = tokenService;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public Optional&lt;User&gt; findByCredentials(String email, String password) {
-<b class="nc">&nbsp;        return userService.findByCredentials(email, password);</b>
+<b class="fc">&nbsp;        return userService.findByCredentials(email, password);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void verifyResetPasswordToken(String token) {
-<b class="nc">&nbsp;        userService.findByResetPasswordToken(token).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="fc">&nbsp;        userService.findByResetPasswordToken(token).orElseThrow(ResourceNotFoundException::new);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void resetPassword(String token, String newPassword) {
-<b class="nc">&nbsp;        User user = userService.findByResetPasswordToken(token).orElseThrow(ResourceNotFoundException::new);</b>
-<b class="nc">&nbsp;        userService.resetPassword(user,newPassword);</b>
+<b class="fc">&nbsp;        User user = userService.findByResetPasswordToken(token).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="fc">&nbsp;        userService.resetPassword(user,newPassword);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public User getUserByAuthToken(String token) {
-<b class="nc">&nbsp;        int userId = tokenService.extractTokenDetails(token).getId();</b>
-<b class="nc">&nbsp;        User user = userService.findUserById(userId);</b>
-<b class="nc">&nbsp;        return user;</b>
+<b class="fc">&nbsp;        int userId = tokenService.extractTokenDetails(token).getId();</b>
+<b class="fc">&nbsp;        User user = userService.findUserById(userId);</b>
+<b class="fc">&nbsp;        return user;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public String generateAuthToken(User user) {
-<b class="nc">&nbsp;        Principal payload = new Principal(user);</b>
-<b class="nc">&nbsp;        String token = tokenService.generateToken(payload);</b>
-<b class="nc">&nbsp;        return token;</b>
+<b class="fc">&nbsp;        Principal payload = new Principal(user);</b>
+<b class="fc">&nbsp;        String token = tokenService.generateToken(payload);</b>
+<b class="fc">&nbsp;        return token;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public void forgotPassword(UpdateUserRequest updateUserRequest) {
 &nbsp;
-<b class="nc">&nbsp;        String token = UUID.randomUUID().toString();</b>
+<b class="fc">&nbsp;        String token = UUID.randomUUID().toString();</b>
 &nbsp;
-<b class="nc">&nbsp;        userService.updateResetPasswordToken(token, updateUserRequest.getEmail());</b>
-<b class="nc">&nbsp;        String resetPasswordLink = &quot;http://localhost:3000/reset-password/&quot; + token;</b>
+<b class="fc">&nbsp;        userService.updateResetPasswordToken(token, updateUserRequest.getEmail());</b>
+<b class="fc">&nbsp;        String resetPasswordLink = &quot;http://localhost:3000/reset-password/&quot; + token;</b>
 &nbsp;
-<b class="nc">&nbsp;        String to = updateUserRequest.getEmail();</b>
-<b class="nc">&nbsp;        String subject = &quot;Reset your Congo Password&quot;;</b>
-<b class="nc">&nbsp;        String text = &quot;Click the link below to change your password\nIgnore this message if you didn&#39;t request your password to be changed\n&quot; + resetPasswordLink;</b>
+<b class="fc">&nbsp;        String to = updateUserRequest.getEmail();</b>
+<b class="fc">&nbsp;        String subject = &quot;Reset your Congo Password&quot;;</b>
+<b class="fc">&nbsp;        String text = &quot;Click the link below to change your password\nIgnore this message if you didn&#39;t request your password to be changed\n&quot; + resetPasswordLink;</b>
 &nbsp;
-<b class="nc">&nbsp;        sendEmailService.sendEmail(to,subject,text);</b>
+<b class="fc">&nbsp;        sendEmailService.sendEmail(to,subject,text);</b>
 &nbsp;    }
 &nbsp;    public User register(User user) {
-<b class="nc">&nbsp;        return userService.save(user);</b>
+<b class="fc">&nbsp;        return userService.save(user);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -167,7 +167,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-03 15:13</div>
+    <div style="float:right;">generated on 2023-02-03 16:41</div>
 </div>
 </body>
 </html>

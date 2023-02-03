@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">OrderDetailService</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/6)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/22)
+    (22/22)
   </span>
 </td>
 </tr>
@@ -98,48 +98,48 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final OrderService orderService;
 &nbsp;
 &nbsp;    @Autowired
-<b class="nc">&nbsp;    public OrderDetailService(OrderDetailRepository orderDetailRepository, ProductService productService, OrderService orderService){</b>
-<b class="nc">&nbsp;        this.orderDetailRepository=orderDetailRepository;</b>
-<b class="nc">&nbsp;        this.productService = productService;</b>
-<b class="nc">&nbsp;        this.orderService = orderService;</b>
+<b class="fc">&nbsp;    public OrderDetailService(OrderDetailRepository orderDetailRepository, ProductService productService, OrderService orderService){</b>
+<b class="fc">&nbsp;        this.orderDetailRepository=orderDetailRepository;</b>
+<b class="fc">&nbsp;        this.productService = productService;</b>
+<b class="fc">&nbsp;        this.orderService = orderService;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public OrderDetailResponse createOrderDetail(OrderDetailRequest orderDetailRequest) {
-<b class="nc">&nbsp;        OrderDetail orderDetail = new OrderDetail();</b>
-<b class="nc">&nbsp;        Order foundOrder = orderService.findById(orderDetailRequest.getOrderId());</b>
-<b class="nc">&nbsp;        Product foundProduct = productService.findById(orderDetailRequest.getProductId()).orElseThrow(() -&gt; new ResourceNotFoundException(&quot;No product found .&quot;));</b>
-<b class="nc">&nbsp;        orderDetail.setOrderId(foundOrder);</b>
-<b class="nc">&nbsp;        orderDetail.setProductId(foundProduct);</b>
-<b class="nc">&nbsp;        orderDetail.setQuantity(orderDetailRequest.getQuantity());</b>
-<b class="nc">&nbsp;        orderDetailRepository.save(orderDetail);</b>
-<b class="nc">&nbsp;        return new OrderDetailResponse(orderDetail);</b>
+<b class="fc">&nbsp;        OrderDetail orderDetail = new OrderDetail();</b>
+<b class="fc">&nbsp;        Order foundOrder = orderService.findById(orderDetailRequest.getOrderId());</b>
+<b class="fc">&nbsp;        Product foundProduct = productService.findById(orderDetailRequest.getProductId()).orElseThrow(() -&gt; new ResourceNotFoundException(&quot;No product found .&quot;));</b>
+<b class="fc">&nbsp;        orderDetail.setOrderId(foundOrder);</b>
+<b class="fc">&nbsp;        orderDetail.setProductId(foundProduct);</b>
+<b class="fc">&nbsp;        orderDetail.setQuantity(orderDetailRequest.getQuantity());</b>
+<b class="fc">&nbsp;        orderDetailRepository.save(orderDetail);</b>
+<b class="fc">&nbsp;        return new OrderDetailResponse(orderDetail);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public List&lt;OrderDetail&gt; findAll(){
-<b class="nc">&nbsp;        List&lt;OrderDetail&gt; orderDetails = orderDetailRepository.findAll();</b>
-<b class="nc">&nbsp;        return orderDetailRepository.findAll();</b>
+<b class="fc">&nbsp;        List&lt;OrderDetail&gt; orderDetails = orderDetailRepository.findAll();</b>
+<b class="fc">&nbsp;        return orderDetailRepository.findAll();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public List&lt;OrderDetailResponse&gt; findAllOrderDetailsByOrder(int id){
-<b class="nc">&nbsp;        Order foundOrder = orderService.findById(id);</b>
-<b class="nc">&nbsp;        List&lt;OrderDetail&gt; orderDetails = orderDetailRepository.findByOrderId(foundOrder);</b>
-<b class="nc">&nbsp;        List&lt;OrderDetailResponse&gt; orderDetailResponses = orderDetails.stream().map(OrderDetailResponse::new).collect(Collectors.toList());</b>
-<b class="nc">&nbsp;        return orderDetailResponses;</b>
+<b class="fc">&nbsp;        Order foundOrder = orderService.findById(id);</b>
+<b class="fc">&nbsp;        List&lt;OrderDetail&gt; orderDetails = orderDetailRepository.findByOrderId(foundOrder);</b>
+<b class="fc">&nbsp;        List&lt;OrderDetailResponse&gt; orderDetailResponses = orderDetails.stream().map(OrderDetailResponse::new).collect(Collectors.toList());</b>
+<b class="fc">&nbsp;        return orderDetailResponses;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public Optional&lt;OrderDetail&gt; findById(int id) {
-<b class="nc">&nbsp;        return orderDetailRepository.findById(id);</b>
+<b class="fc">&nbsp;        return orderDetailRepository.findById(id);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public boolean delete(int id) {
-<b class="nc">&nbsp;        OrderDetail foundOrderDetail = orderDetailRepository.findById(id).orElseThrow(() -&gt; new RuntimeException(&quot;OrderDetail couldn&#39;t be deleted.&quot;));</b>
-<b class="nc">&nbsp;        orderDetailRepository.delete(foundOrderDetail);</b>
-<b class="nc">&nbsp;        return true;</b>
+<b class="fc">&nbsp;        OrderDetail foundOrderDetail = orderDetailRepository.findById(id).orElseThrow(() -&gt; new RuntimeException(&quot;OrderDetail couldn&#39;t be deleted.&quot;));</b>
+<b class="fc">&nbsp;        orderDetailRepository.delete(foundOrderDetail);</b>
+<b class="fc">&nbsp;        return true;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;}
@@ -166,7 +166,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-03 15:13</div>
+    <div style="float:right;">generated on 2023-02-03 16:41</div>
 </div>
 </body>
 </html>
