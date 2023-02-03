@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductReviewRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductReviewRepository (com.revature.repositories)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ProductReviewRepository$MockitoMock$1964153730</td>
+  </tr>
+  <tr>
+    <td class="name">ProductReviewRepository$MockitoMock$1964153730$auxiliary$3DPYGBF7</td>
+  </tr>
+  <tr>
+    <td class="name">ProductReviewRepository$MockitoMock$1964153730$auxiliary$CEByCbp6</td>
+  </tr>
+  <tr>
+    <td class="name">ProductReviewRepository$MockitoMock$1964153730$auxiliary$G4Wg21rP</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.repositories;
+&nbsp;
+&nbsp;
+&nbsp;import com.revature.models.ProductReview;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface ProductReviewRepository extends JpaRepository&lt;ProductReview, Integer&gt; {
+&nbsp;
+&nbsp;    @Query(&quot;FROM ProductReview WHERE product_id = :product_id&quot;)
+&nbsp;    List&lt;ProductReview&gt; findAllByProductId(int product_id);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT rating FROM ProductReview WHERE product_id = :product_id&quot;)
+&nbsp;    List&lt;Integer&gt; findProductAverageScore(int product_id);
+&nbsp;
+&nbsp;    @Query(&quot;FROM ProductReview WHERE product_id = :product_id AND rating = :rating&quot;)
+&nbsp;    List&lt;ProductReview&gt; findAllByProductScore(int product_id,int rating);
+&nbsp;
+&nbsp;    @Query(&quot;FROM ProductReview WHERE product_id = :product_id AND user_id = :user_id&quot;)
+&nbsp;    List&lt;ProductReview&gt; canPost(int product_id,int user_id);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

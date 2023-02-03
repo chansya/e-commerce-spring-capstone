@@ -1,0 +1,191 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Product</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.models</a>
+</div>
+
+<h1>Coverage Summary for Class: Product (com.revature.models)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Product</td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$AC7bvNNi</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$dfOobS8v</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$E1gj0Ya5</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$evjOfxNl</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$FJHvRRs1</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$fRbBcWTZ</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$fzVSw9Mo</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$hlZii9SR</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$i5Vx44RV</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$OVTVqveZ</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$QyWojTxv</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$T2yMemqp</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$TGlZbUFp</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$vETJm0kj</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$vwtKfudJ</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$W6HtmRCF</td>
+  </tr>
+  <tr>
+    <td class="name">Product$MockitoMock$1258747953$auxiliary$ZX3bRvFz</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.models;
+&nbsp;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import javax.persistence.Entity;
+&nbsp;import javax.persistence.GeneratedValue;
+&nbsp;import javax.persistence.GenerationType;
+&nbsp;import javax.persistence.Id;
+&nbsp;
+<b class="nc">&nbsp;@Data</b>
+&nbsp;@Entity
+<b class="nc">&nbsp;@NoArgsConstructor</b>
+<b class="fc">&nbsp;@AllArgsConstructor</b>
+&nbsp;public class Product {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+<b class="fc">&nbsp;    private Integer id;</b>
+<b class="nc">&nbsp;    private int quantity;</b>
+<b class="nc">&nbsp;    private double price;</b>
+<b class="nc">&nbsp;    private String description;</b>
+<b class="nc">&nbsp;    private String image;</b>
+<b class="nc">&nbsp;    private String name;</b>
+<b class="fc">&nbsp;    private boolean isActive = true;</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

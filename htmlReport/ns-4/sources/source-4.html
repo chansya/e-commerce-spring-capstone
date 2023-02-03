@@ -1,0 +1,182 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PaymentController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: PaymentController (com.revature.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PaymentController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.controllers;
+&nbsp;
+&nbsp;import com.revature.annotations.Authorized;
+&nbsp;import com.revature.dtos.CreatePaymentRequest;
+&nbsp;import com.revature.dtos.EditPaymentRequest;
+&nbsp;import com.revature.dtos.PaymentResponse;
+&nbsp;import com.revature.dtos.UserResponse;
+&nbsp;import com.revature.exceptions.UnauthorizedException;
+&nbsp;import com.revature.models.Payment;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.services.AuthService;
+&nbsp;import com.revature.services.PaymentService;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.servlet.http.HttpServletRequest;
+&nbsp;import javax.servlet.http.HttpSession;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/payment&quot;)
+&nbsp;@CrossOrigin(origins = {&quot;http://localhost:4200&quot;, &quot;http://localhost:3000&quot;, &quot;http://e-commerce-congo-react-lb-919946656.us-east-1.elb.amazonaws.com&quot;},  allowCredentials = &quot;true&quot;, exposedHeaders = &quot;Authorization&quot;)
+&nbsp;public class PaymentController {
+&nbsp;
+&nbsp;    private final PaymentService paymentService;
+&nbsp;    private final AuthService authService;
+&nbsp;
+<b class="nc">&nbsp;    public PaymentController(PaymentService paymentService, AuthService authService) {</b>
+<b class="nc">&nbsp;        this.paymentService = paymentService;</b>
+<b class="nc">&nbsp;        this.authService = authService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @PostMapping
+&nbsp;    public ResponseEntity&lt;PaymentResponse&gt; createPayment(@RequestBody @Valid CreatePaymentRequest createPaymentRequest, HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User authUser = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        PaymentResponse newPayment = paymentService.createPayment(createPaymentRequest, authUser);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(newPayment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @PutMapping
+&nbsp;    public ResponseEntity&lt;PaymentResponse&gt; updatedPayment(@RequestBody EditPaymentRequest editPaymentRequest, HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User user = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(paymentService.updatePayment(editPaymentRequest, user));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @DeleteMapping
+&nbsp;    public ResponseEntity&lt;String&gt; deletePayment(@RequestParam(&quot;paymentId&quot;) String paymentId, HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User user = authService.getUserByAuthToken(token);</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            if (paymentService.deletePayment(paymentId, user) != null) {</b>
+<b class="nc">&nbsp;                return ResponseEntity.ok(String.format(&quot;Payment %s was deleted&quot;, paymentId));</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (UnauthorizedException e) {</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(e.getMessage(), HttpStatus.UNAUTHORIZED);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(&quot;Payment not deleted&quot;, HttpStatus.BAD_REQUEST);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @GetMapping
+&nbsp;    public List&lt;PaymentResponse&gt; findAllUserPayment(HttpServletRequest req){
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User user = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        List&lt;PaymentResponse&gt; newPaymentResponse = paymentService.findAllByUser(user.getId());</b>
+<b class="nc">&nbsp;        return newPaymentResponse;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

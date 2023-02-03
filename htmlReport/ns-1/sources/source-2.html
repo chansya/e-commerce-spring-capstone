@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > OrderDetailService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.services</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderDetailService (com.revature.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderDetailService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.services;
+&nbsp;import com.revature.dtos.OrderDetailRequest;
+&nbsp;import com.revature.dtos.OrderDetailResponse;
+&nbsp;import com.revature.exceptions.ResourceNotFoundException;
+&nbsp;import com.revature.models.Order;
+&nbsp;import com.revature.models.OrderDetail;
+&nbsp;import com.revature.models.Product;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.repositories.OrderDetailRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class OrderDetailService {
+&nbsp;    private final OrderDetailRepository orderDetailRepository;
+&nbsp;    private final ProductService productService;
+&nbsp;    private final OrderService orderService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="nc">&nbsp;    public OrderDetailService(OrderDetailRepository orderDetailRepository, ProductService productService, OrderService orderService){</b>
+<b class="nc">&nbsp;        this.orderDetailRepository=orderDetailRepository;</b>
+<b class="nc">&nbsp;        this.productService = productService;</b>
+<b class="nc">&nbsp;        this.orderService = orderService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public OrderDetailResponse createOrderDetail(OrderDetailRequest orderDetailRequest) {
+<b class="nc">&nbsp;        OrderDetail orderDetail = new OrderDetail();</b>
+<b class="nc">&nbsp;        Order foundOrder = orderService.findById(orderDetailRequest.getOrderId());</b>
+<b class="nc">&nbsp;        Product foundProduct = productService.findById(orderDetailRequest.getProductId()).orElseThrow(() -&gt; new ResourceNotFoundException(&quot;No product found .&quot;));</b>
+<b class="nc">&nbsp;        orderDetail.setOrderId(foundOrder);</b>
+<b class="nc">&nbsp;        orderDetail.setProductId(foundProduct);</b>
+<b class="nc">&nbsp;        orderDetail.setQuantity(orderDetailRequest.getQuantity());</b>
+<b class="nc">&nbsp;        orderDetailRepository.save(orderDetail);</b>
+<b class="nc">&nbsp;        return new OrderDetailResponse(orderDetail);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public List&lt;OrderDetail&gt; findAll(){
+<b class="nc">&nbsp;        List&lt;OrderDetail&gt; orderDetails = orderDetailRepository.findAll();</b>
+<b class="nc">&nbsp;        return orderDetailRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public List&lt;OrderDetailResponse&gt; findAllOrderDetailsByOrder(int id){
+<b class="nc">&nbsp;        Order foundOrder = orderService.findById(id);</b>
+<b class="nc">&nbsp;        List&lt;OrderDetail&gt; orderDetails = orderDetailRepository.findByOrderId(foundOrder);</b>
+<b class="nc">&nbsp;        List&lt;OrderDetailResponse&gt; orderDetailResponses = orderDetails.stream().map(OrderDetailResponse::new).collect(Collectors.toList());</b>
+<b class="nc">&nbsp;        return orderDetailResponses;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public Optional&lt;OrderDetail&gt; findById(int id) {
+<b class="nc">&nbsp;        return orderDetailRepository.findById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public boolean delete(int id) {
+<b class="nc">&nbsp;        OrderDetail foundOrderDetail = orderDetailRepository.findById(id).orElseThrow(() -&gt; new RuntimeException(&quot;OrderDetail couldn&#39;t be deleted.&quot;));</b>
+<b class="nc">&nbsp;        orderDetailRepository.delete(foundOrderDetail);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 15:13</div>
+</div>
+</body>
+</html>

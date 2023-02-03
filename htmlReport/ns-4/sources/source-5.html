@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductController (com.revature.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.controllers;
+&nbsp;
+&nbsp;import com.revature.annotations.Authorized;
+&nbsp;import com.revature.dtos.ProductInfo;
+&nbsp;import com.revature.models.Product;
+&nbsp;import com.revature.services.ProductService;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/product&quot;)
+&nbsp;@CrossOrigin(origins = {&quot;http://localhost:4200&quot;, &quot;http://localhost:3000&quot;, &quot;http://e-commerce-congo-react-lb-919946656.us-east-1.elb.amazonaws.com&quot;},  allowCredentials = &quot;true&quot;, exposedHeaders = &quot;Authorization&quot;)
+&nbsp;public class ProductController {
+&nbsp;
+&nbsp;    private final ProductService productService;
+&nbsp;
+<b class="nc">&nbsp;    public ProductController(ProductService productService) {</b>
+<b class="nc">&nbsp;        this.productService = productService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getInventory() {
+<b class="nc">&nbsp;        return ResponseEntity.ok(productService.findAll());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Product&gt; getProductById(@PathVariable(&quot;id&quot;) int id) {
+<b class="nc">&nbsp;        Optional&lt;Product&gt; optional = productService.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if(!optional.isPresent()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return ResponseEntity.ok(optional.get());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/search/{keyword}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getProductByKeyword(@PathVariable String keyword){
+<b class="nc">&nbsp;        return ResponseEntity.ok(productService.findByKeyword(keyword));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @PutMapping
+&nbsp;    public ResponseEntity&lt;Product&gt; upsert(@RequestBody Product product) {
+<b class="nc">&nbsp;        if (product.getId() == 0)</b>
+<b class="nc">&nbsp;            product.setId(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(productService.save(product));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @PatchMapping
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; purchase(@RequestBody List&lt;ProductInfo&gt; metadata) { 	
+<b class="nc">&nbsp;    	List&lt;Product&gt; productList = new ArrayList&lt;Product&gt;();</b>
+&nbsp;    	
+<b class="nc">&nbsp;    	for (int i = 0; i &lt; metadata.size(); i++) {</b>
+<b class="nc">&nbsp;    		Optional&lt;Product&gt; optional = productService.findById(metadata.get(i).getId());</b>
+&nbsp;
+<b class="nc">&nbsp;    		if(!optional.isPresent()) {</b>
+<b class="nc">&nbsp;    			return ResponseEntity.notFound().build();</b>
+&nbsp;    		}
+&nbsp;
+<b class="nc">&nbsp;    		Product product = optional.get();</b>
+&nbsp;
+<b class="nc">&nbsp;    		if(product.getQuantity() - metadata.get(i).getQuantity() &lt; 0) {</b>
+<b class="nc">&nbsp;    			return ResponseEntity.badRequest().build();</b>
+&nbsp;    		}
+&nbsp;    		
+<b class="nc">&nbsp;    		product.setQuantity(product.getQuantity() - metadata.get(i).getQuantity());</b>
+<b class="nc">&nbsp;    		productList.add(product);</b>
+&nbsp;    	}
+&nbsp;        
+<b class="nc">&nbsp;        productService.saveAll(productList, metadata);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(productList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Product&gt; deleteProduct(@PathVariable(&quot;id&quot;) int id) {
+<b class="nc">&nbsp;        Optional&lt;Product&gt; optional = productService.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if(!optional.isPresent()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        productService.delete(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(optional.get());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

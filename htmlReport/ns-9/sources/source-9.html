@@ -1,0 +1,278 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.services</a>
+</div>
+
+<h1>Coverage Summary for Class: UserService (com.revature.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserService</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (8/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (21/35)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$4G30dcks</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$7U8KiAg6</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$aPz1ydNf</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$hDgIfhvs</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$k3tBMl3k</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$MpQbHCqi</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$pmEmoNp1</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$pn9XRz4S</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$Q0hkFyjO</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$QkPNjqGO</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$TJwjoCE6</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$uzQ69pFd</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$w2xCsHyf</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$Z8Cw1nmt</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$1786988053$auxiliary$ZMRBmwya</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (8/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (21/35)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.services;
+&nbsp;
+&nbsp;import com.revature.dtos.RegisterRequest;
+&nbsp;import com.revature.dtos.UpdateUserRequest;
+&nbsp;import com.revature.dtos.UserResponse;
+&nbsp;import com.revature.exceptions.InvalidUserInputException;
+&nbsp;import com.revature.exceptions.ResourceNotFoundException;
+&nbsp;import com.revature.exceptions.ResourcePersistanceException;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.repositories.UserRepository;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.function.Predicate;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class UserService {
+&nbsp;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+<b class="fc">&nbsp;    public UserService(UserRepository userRepository) {</b>
+<b class="fc">&nbsp;        this.userRepository = userRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public Optional&lt;User&gt; findByCredentials(String email, String password) {
+<b class="fc">&nbsp;        return userRepository.findByEmailAndPassword(email, password);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public Optional&lt;User&gt; findByEmail(String email){
+<b class="nc">&nbsp;        return userRepository.checkEmail(email);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public Optional&lt;User&gt; findByResetPasswordToken(String resetPasswordToken) {
+<b class="nc">&nbsp;        return userRepository.findByResetPasswordToken(resetPasswordToken);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void updateResetPasswordToken(String resetPasswordToken, String email) {
+<b class="nc">&nbsp;        User user = findByEmail(email).orElseThrow(ResourceNotFoundException::new);</b>
+&nbsp;
+<b class="nc">&nbsp;        user.setResetPasswordToken(resetPasswordToken);</b>
+<b class="nc">&nbsp;        userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void resetPassword(User user, String newPassword) {
+<b class="nc">&nbsp;        user.setPassword(newPassword);</b>
+<b class="nc">&nbsp;        user.setResetPasswordToken(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public User save(User user) {
+<b class="fc">&nbsp;        return userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(readOnly = true)
+&nbsp;    public boolean isEmailAvailable(String email){
+<b class="fc">&nbsp;        if(userRepository.checkEmail(email).isPresent())</b>
+<b class="nc">&nbsp;            throw new InvalidUserInputException(&quot;Email: &quot; + email + &quot; is already registered please try again. Or Log in with email &amp; password.&quot;);</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public UserResponse registerUser(RegisterRequest registerRequest) throws InvalidUserInputException, ResourcePersistanceException {
+<b class="fc">&nbsp;        User newUser = new User(registerRequest);</b>
+<b class="fc">&nbsp;        isEmailAvailable(newUser.getEmail());</b>
+<b class="fc">&nbsp;        return new UserResponse(userRepository.save(newUser));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void update(UpdateUserRequest updateUserRequest, User currentUser) throws InvalidUserInputException{
+<b class="fc">&nbsp;        User foundUser = userRepository.findById(currentUser.getId()).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="fc">&nbsp;        Predicate&lt;String&gt; notNullOrEmpty = (str) -&gt; str != null &amp;&amp; !str.trim().equals(&quot;&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(notNullOrEmpty.test(updateUserRequest.getFirstName()))</b>
+<b class="fc">&nbsp;            foundUser.setFirstName(updateUserRequest.getFirstName());</b>
+&nbsp;
+<b class="fc">&nbsp;        if(notNullOrEmpty.test(updateUserRequest.getLastName()))</b>
+<b class="fc">&nbsp;            foundUser.setLastName(updateUserRequest.getLastName());</b>
+&nbsp;
+<b class="fc">&nbsp;        if(notNullOrEmpty.test(updateUserRequest.getPassword()))</b>
+<b class="fc">&nbsp;            foundUser.setPassword(updateUserRequest.getPassword());</b>
+&nbsp;
+&nbsp;
+&nbsp;        }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void deactivate(User currentUser) throws InvalidUserInputException{
+<b class="fc">&nbsp;        User foundUser = userRepository.findById(currentUser.getId()).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="fc">&nbsp;        userRepository.deactivateUser(foundUser.getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void deactivateUser(User user) throws InvalidUserInputException{
+<b class="nc">&nbsp;        User foundUser = userRepository.findById(user.getId()).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="nc">&nbsp;        userRepository.deactivateUser(foundUser.getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(readOnly = true)
+&nbsp;    public UserResponse findById(int id){
+<b class="nc">&nbsp;        User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="nc">&nbsp;        UserResponse userResponse = new UserResponse(user);</b>
+<b class="nc">&nbsp;        return userResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(readOnly = true)
+&nbsp;    public User findUserById(int id) {
+<b class="fc">&nbsp;        User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="fc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

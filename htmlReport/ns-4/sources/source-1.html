@@ -1,0 +1,185 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AuthController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: AuthController (com.revature.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.controllers;
+&nbsp;
+&nbsp;import com.revature.annotations.Authorized;
+&nbsp;import com.revature.dtos.*;
+&nbsp;import com.revature.exceptions.UnauthorizedException;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.services.AuthService;
+&nbsp;import com.revature.services.TokenService;
+&nbsp;import com.revature.services.UserService;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.servlet.http.HttpServletRequest;
+&nbsp;import javax.servlet.http.HttpServletResponse;
+&nbsp;import javax.servlet.http.HttpSession;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/auth&quot;)
+&nbsp;@CrossOrigin(origins = {&quot;http://localhost:4200&quot;, &quot;http://localhost:3000&quot;, &quot;http://e-commerce-congo-react-lb-919946656.us-east-1.elb.amazonaws.com&quot;},  allowCredentials = &quot;true&quot;, exposedHeaders = &quot;Authorization&quot;)
+&nbsp;public class AuthController {
+&nbsp;
+&nbsp;    private final AuthService authService;
+&nbsp;
+<b class="nc">&nbsp;    public AuthController(AuthService authService) {</b>
+<b class="nc">&nbsp;        this.authService = authService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @GetMapping
+&nbsp;    public ResponseEntity&lt;UserResponse&gt; getCurrentUser(HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User currentUser = authService.getUserByAuthToken(token);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(new UserResponse(currentUser));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/reset-password/{token}&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; verifyResetPasswordToken(@PathVariable String token) {
+<b class="nc">&nbsp;        authService.verifyResetPasswordToken(token);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/login&quot;)
+&nbsp;    public ResponseEntity&lt;UserResponse&gt; login(@RequestBody LoginRequest loginRequest, HttpServletResponse resp) {
+<b class="nc">&nbsp;        User authUser = authService.findByCredentials(loginRequest.getEmail(), loginRequest.getPassword()).orElseThrow(UnauthorizedException::new);</b>
+<b class="nc">&nbsp;        if (!authUser.isActive()) throw new UnauthorizedException(&quot;User&#39;s account is currently inactive, Please login with another account&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        String token = authService.generateAuthToken(authUser);</b>
+<b class="nc">&nbsp;        resp.setHeader(&quot;Authorization&quot;, token);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(new UserResponse(authUser));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PutMapping(&quot;/forgot-password&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; forgotPassword(@RequestBody UpdateUserRequest updateUserRequest){
+<b class="nc">&nbsp;        authService.forgotPassword(updateUserRequest);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/reset-password/{token}&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; resetPassword(@PathVariable String token, @RequestBody UpdateUserRequest updateUserRequest) {
+<b class="nc">&nbsp;        authService.resetPassword(token,updateUserRequest.getPassword());</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/logout&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; logout(HttpServletResponse resp) {
+<b class="nc">&nbsp;        resp.setHeader(&quot;Authorization&quot;,&quot;&quot;);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/register&quot;)
+&nbsp;    public ResponseEntity&lt;UserResponse&gt; register(@RequestBody RegisterRequest registerRequest) {
+<b class="nc">&nbsp;        User created = new User(registerRequest);</b>
+<b class="nc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(authService.register(created)));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

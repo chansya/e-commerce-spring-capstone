@@ -1,0 +1,100 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductRepository (com.revature.repositories)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$1078573269</td>
+  </tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$1078573269$auxiliary$0oR8zr3L</td>
+  </tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$1078573269$auxiliary$1h9Y7k3c</td>
+  </tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$1078573269$auxiliary$H7V6Fjkt</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.repositories;
+&nbsp;
+&nbsp;import com.revature.models.Product;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;public interface ProductRepository extends JpaRepository&lt;Product, Integer&gt; {
+&nbsp;
+&nbsp;    @Query(&quot;FROM Product WHERE is_active = true&quot;)
+&nbsp;    List&lt;Product&gt; findAllActive();
+&nbsp;
+&nbsp;    @Query(&quot;FROM Product WHERE is_active = true and id = :id&quot;)
+&nbsp;    Optional&lt;Product&gt; findActiveById(int id);
+&nbsp;
+&nbsp;    @Query(&quot;FROM Product WHERE (lower(name) LIKE lower(:keyword) OR lower(description) LIKE lower(:keyword)) AND is_active = true&quot;)
+&nbsp;    List&lt;Product&gt; findByKeyword(String keyword);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TokenGenerator</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.security</a>
+</div>
+
+<h1>Coverage Summary for Class: TokenGenerator (com.revature.security)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TokenGenerator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.security;
+&nbsp;
+&nbsp;import com.revature.dtos.Principal;
+&nbsp;import io.jsonwebtoken.JwtBuilder;
+&nbsp;import io.jsonwebtoken.Jwts;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.Date;
+&nbsp;
+&nbsp;@Component
+&nbsp;public class TokenGenerator {
+&nbsp;    private final JWTConfig jwtConfig;
+&nbsp;
+<b class="nc">&nbsp;    public TokenGenerator(JWTConfig jwtConfig) {</b>
+<b class="nc">&nbsp;        this.jwtConfig = jwtConfig;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String createToken(Principal principalUser) {
+<b class="nc">&nbsp;        long now = System.currentTimeMillis();</b>
+<b class="nc">&nbsp;        JwtBuilder tokenBuilder = Jwts.builder()</b>
+<b class="nc">&nbsp;                .setId(Integer.toString(principalUser.getId()))</b>
+<b class="nc">&nbsp;                .setSubject(principalUser.getEmail())</b>
+<b class="nc">&nbsp;                .setIssuer(&quot;Congo&quot;)</b>
+<b class="nc">&nbsp;                .claim(&quot;isAdmin&quot;, principalUser.isAdmin())</b>
+<b class="nc">&nbsp;                .claim(&quot;isActive&quot;, principalUser.isActive())</b>
+<b class="nc">&nbsp;                .setIssuedAt(new Date(now))</b>
+<b class="nc">&nbsp;                .setExpiration(new Date(now + jwtConfig.getExpiration()))</b>
+<b class="nc">&nbsp;                .signWith(jwtConfig.getSigAlg(),jwtConfig.getSigningKey());</b>
+<b class="nc">&nbsp;        return tokenBuilder.compact();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

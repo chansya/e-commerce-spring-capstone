@@ -1,0 +1,234 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PaymentService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.services</a>
+</div>
+
+<h1>Coverage Summary for Class: PaymentService (com.revature.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PaymentService</td>
+<td class="coverageStat">
+  <span class="percent">
+    42.9%
+  </span>
+  <span class="absValue">
+    (3/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51.2%
+  </span>
+  <span class="absValue">
+    (21/41)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$78GskFjh</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$aE9Lspl7</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$KgRXpq6g</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$kxtylT7R</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$MExZXiRr</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$NeUKQYJi</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$rz7qlC7g</td>
+  </tr>
+  <tr>
+    <td class="name">PaymentService$MockitoMock$998641071$auxiliary$sc9d1RTh</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    42.9%
+  </span>
+  <span class="absValue">
+    (3/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51.2%
+  </span>
+  <span class="absValue">
+    (21/41)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.services;
+&nbsp;
+&nbsp;import com.revature.dtos.CreatePaymentRequest;
+&nbsp;import com.revature.dtos.EditPaymentRequest;
+&nbsp;import com.revature.dtos.PaymentResponse;
+&nbsp;import com.revature.dtos.UserResponse;
+&nbsp;import com.revature.exceptions.InvalidUserInputException;
+&nbsp;import com.revature.exceptions.ResourceNotFoundException;
+&nbsp;import com.revature.exceptions.UnauthorizedException;
+&nbsp;import com.revature.models.Payment;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.repositories.PaymentRepository;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;import java.util.function.Predicate;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class PaymentService {
+&nbsp;    private final PaymentRepository paymentRepository;
+&nbsp;
+<b class="fc">&nbsp;    public PaymentService(PaymentRepository paymentRepository, UserService userService) {</b>
+<b class="fc">&nbsp;        this.paymentRepository = paymentRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PaymentResponse createPayment(CreatePaymentRequest createPaymentRequest, User user) {
+<b class="fc">&nbsp;        Payment newPayment = new Payment();</b>
+<b class="fc">&nbsp;        newPayment.setId(UUID.randomUUID().toString());</b>
+<b class="fc">&nbsp;        newPayment.setCardNumber(createPaymentRequest.getCardNumber());</b>
+<b class="fc">&nbsp;        newPayment.setCcv(createPaymentRequest.getCcv());</b>
+<b class="fc">&nbsp;        newPayment.setExpDate(createPaymentRequest.getExpDate());</b>
+<b class="fc">&nbsp;        if (user == null) {</b>
+<b class="nc">&nbsp;            throw new InvalidUserInputException(&quot;No User was provided for payment.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        newPayment.setUserId(user);</b>
+<b class="fc">&nbsp;        if (!isPaymentValid(newPayment)) {</b>
+<b class="fc">&nbsp;            throw new InvalidUserInputException(&quot;Invalid input provided for payment&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        paymentRepository.save(newPayment);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new PaymentResponse(newPayment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isPaymentValid(Payment payment) {
+<b class="fc">&nbsp;        Predicate&lt;String&gt; notNullOrEmpty = (str) -&gt; str != null &amp;&amp; !str.trim().equals(&quot;&quot;);</b>
+<b class="fc">&nbsp;        if (!notNullOrEmpty.test(payment.getCardNumber())) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (!notNullOrEmpty.test(payment.getCcv())) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (payment.getExpDate() == null) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Payment findPaymentById(String id) {
+<b class="nc">&nbsp;        Payment foundPayment = paymentRepository.findById(id).orElseThrow(() -&gt; new RuntimeException(&quot;No payment with this ID found.&quot;));</b>
+<b class="nc">&nbsp;        return foundPayment;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PaymentResponse updatePayment(EditPaymentRequest editPaymentRequest, User user) {
+<b class="nc">&nbsp;        Payment foundPayment = paymentRepository.findById(editPaymentRequest.getPaymentId()).orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Payment not found.&quot;));</b>
+<b class="nc">&nbsp;        if (foundPayment.getUserId().getId() != user.getId()) {</b>
+<b class="nc">&nbsp;            throw new UnauthorizedException(&quot;Unauthorized update payment request.&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        foundPayment.setCardNumber(editPaymentRequest.getCardNumber());</b>
+<b class="nc">&nbsp;        foundPayment.setCcv(editPaymentRequest.getCardType());</b>
+<b class="nc">&nbsp;        foundPayment.setExpDate(editPaymentRequest.getExpDate());</b>
+<b class="nc">&nbsp;        paymentRepository.save(foundPayment);</b>
+<b class="nc">&nbsp;        PaymentResponse updatedPayment = new PaymentResponse(foundPayment);</b>
+&nbsp;
+<b class="nc">&nbsp;        return updatedPayment;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PaymentResponse deletePayment(String paymentId, User user) throws UnauthorizedException {
+<b class="nc">&nbsp;        Payment foundPayment = paymentRepository.findById(paymentId).orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Payment not found&quot;));</b>
+<b class="nc">&nbsp;        if (foundPayment.getUserId().getId() != user.getId()) {</b>
+<b class="nc">&nbsp;            throw new UnauthorizedException(&quot;Must be logged in as payment owner to delete payment.&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        PaymentResponse paymentResponse = new PaymentResponse(foundPayment);</b>
+<b class="nc">&nbsp;        paymentRepository.delete(foundPayment);</b>
+<b class="nc">&nbsp;        return paymentResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(readOnly = true)
+&nbsp;    public List&lt;PaymentResponse&gt; findAllByUser(int userId){
+<b class="nc">&nbsp;        List&lt;Payment&gt; paymentMethods = paymentRepository.findCardsByUser(userId).orElseThrow(ResourceNotFoundException::new);</b>
+<b class="nc">&nbsp;        return paymentMethods.stream().map(PaymentResponse::new).collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

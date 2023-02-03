@@ -62,6 +62,7 @@ public class OrderService {
         return orderResponses;
     }
 
+
     @Transactional
     public List<OrderResponse> findAllUserOrders(User user) {
         List<OrderResponse> orderResponses = new ArrayList<>();
@@ -69,6 +70,8 @@ public class OrderService {
         orderResponses = orders.stream().map(OrderResponse::new).collect(Collectors.toList());
         return orderResponses;
     }
+
+
     @Transactional
     public Order findById(int id) {
         return orderRepository.findById(id).orElseThrow(ResourceNotFoundException::new);

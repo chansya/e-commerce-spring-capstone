@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (com.revature.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.controllers;
+&nbsp;
+&nbsp;import com.revature.annotations.Authorized;
+&nbsp;import com.revature.dtos.RegisterRequest;
+&nbsp;import com.revature.dtos.UpdateUserRequest;
+&nbsp;import com.revature.dtos.UserResponse;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.services.AuthService;
+&nbsp;import com.revature.services.TokenService;
+&nbsp;import com.revature.services.UserService;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.servlet.http.HttpServletRequest;
+&nbsp;import javax.servlet.http.HttpServletResponse;
+&nbsp;import javax.servlet.http.HttpSession;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/user&quot;)
+&nbsp;@CrossOrigin(origins = {&quot;http://localhost:4200&quot;, &quot;http://localhost:3000&quot;, &quot;http://e-commerce-congo-react-lb-919946656.us-east-1.elb.amazonaws.com&quot;},  allowCredentials = &quot;true&quot;, exposedHeaders = &quot;Authorization&quot;)
+&nbsp;public class UserController {
+&nbsp;    private final UserService userService;
+&nbsp;    private final AuthService authService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="nc">&nbsp;    public UserController(UserService userService, AuthService authService) {</b>
+<b class="nc">&nbsp;        this.userService = userService;</b>
+<b class="nc">&nbsp;        this.authService = authService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping
+&nbsp;    public UserResponse register(@RequestBody RegisterRequest registerRequest) {
+<b class="nc">&nbsp;        System.out.println(registerRequest);</b>
+<b class="nc">&nbsp;        return userService.registerUser(registerRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @PutMapping
+&nbsp;    public String update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User currentUser = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        userService.update(updateUserRequest, currentUser);</b>
+<b class="nc">&nbsp;        return &quot;The user account is successfully updated!&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @GetMapping // For user to use
+&nbsp;    public ResponseEntity&lt;UserResponse&gt; getProfile(HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User currentUser = authService.getUserByAuthToken(token);</b>
+&nbsp;
+&nbsp;        //We get users id here to get the most recent updated user information from db
+<b class="nc">&nbsp;        return ResponseEntity.ok(new UserResponse(currentUser));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @PutMapping(&quot;/deactivate&quot;)
+&nbsp;    public String deactivateAccount(HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User currentUser = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        userService.deactivate(currentUser);</b>
+<b class="nc">&nbsp;        return &quot;The user account is successfully deactivated!&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/deactivateUser&quot;)
+&nbsp;    @Authorized(isAdmin = true)
+&nbsp;    public String deactivateUser(User user) {
+<b class="nc">&nbsp;        userService.deactivate(user);</b>
+<b class="nc">&nbsp;        return &quot;The user account is successfully deactivated!&quot;;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>

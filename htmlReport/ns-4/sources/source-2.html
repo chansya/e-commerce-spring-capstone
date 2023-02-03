@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > OrderController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.revature.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderController (com.revature.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.revature.controllers;
+&nbsp;import com.revature.annotations.Authorized;
+&nbsp;import com.revature.dtos.CreateOrderRequest;
+&nbsp;import com.revature.dtos.OrderResponse;
+&nbsp;import com.revature.models.Order;
+&nbsp;import com.revature.models.User;
+&nbsp;import com.revature.services.AuthService;
+&nbsp;import com.revature.services.OrderService;
+&nbsp;import com.revature.services.TokenService;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.servlet.http.HttpServletRequest;
+&nbsp;import javax.servlet.http.HttpSession;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/order&quot;)
+&nbsp;@CrossOrigin(origins = {&quot;http://localhost:4200&quot;, &quot;http://localhost:3000&quot;, &quot;http://e-commerce-congo-react-lb-919946656.us-east-1.elb.amazonaws.com&quot;},  allowCredentials = &quot;true&quot;, exposedHeaders = &quot;Authorization&quot;)
+&nbsp;public class OrderController {
+&nbsp;    private final OrderService orderService;
+&nbsp;    private final AuthService authService;
+&nbsp;
+<b class="nc">&nbsp;    public OrderController(OrderService orderService, AuthService authService) {</b>
+<b class="nc">&nbsp;        this.orderService = orderService;</b>
+<b class="nc">&nbsp;        this.authService = authService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @GetMapping
+&nbsp;    public ResponseEntity&lt;List&lt;OrderResponse&gt;&gt; getAllOrders() {
+<b class="nc">&nbsp;        return ResponseEntity.ok(orderService.findAll());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @GetMapping(&quot;/history&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;OrderResponse&gt;&gt; getOrderHistory(HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User user = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(orderService.findAllUserOrders(user));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Authorized
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Order&gt; getOrderById(@PathVariable(&quot;id&quot;) int id) {
+<b class="nc">&nbsp;        Optional&lt;Order&gt; optional = Optional.of(orderService.findById(id));</b>
+<b class="nc">&nbsp;        if(!optional.isPresent()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return ResponseEntity.ok(optional.get());</b>
+&nbsp;    }
+&nbsp;    @Authorized
+&nbsp;    @PostMapping
+&nbsp;    public ResponseEntity&lt;OrderResponse&gt; createAnOrder(@RequestBody @Valid CreateOrderRequest createOrderRequest, HttpServletRequest req) {
+<b class="nc">&nbsp;        String token = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc">&nbsp;        User user = authService.getUserByAuthToken(token);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.ok(orderService.createOrder(createOrderRequest, user));</b>
+&nbsp;    }
+&nbsp;//    @Authorized
+&nbsp;//    @PutMapping
+&nbsp;//    public ResponseEntity&lt;String&gt; update(@RequestBody EditOrderRequest editOrderRequest, HttpSession session) {
+&nbsp;//        try {
+&nbsp;//            ResponseEntity.ok(orderService.update(editOrderRequest, (User) session.getAttribute(&quot;user&quot;)));
+&nbsp;//            return new ResponseEntity&lt;&gt;(&quot;Order changed successfully&quot;, HttpStatus.CREATED);
+&nbsp;//        } catch (UnauthorizedException e) {
+&nbsp;//            return new ResponseEntity&lt;String&gt;(e.getMessage(), HttpStatus.UNAUTHORIZED);
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;
+&nbsp;    // Do we need a PatchMapping???
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-03 10:31</div>
+</div>
+</body>
+</html>
