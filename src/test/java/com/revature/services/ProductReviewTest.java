@@ -116,32 +116,26 @@ class ProductReviewTest {
         verify(productReviewRepository,times(1)).findById(999);
     }
 
+
     @DisplayName("Find product reviews by product id")
     @Test
-    public void productReviewsFindByProductId() {
-        when(productReviewRepository.findAll()).thenReturn(new ArrayList<>());
-        List<ProductReviewResponse> products = productReviewService.findAll();
-        verify(productReviewRepository,times(1)).findAll();
+    public void testFindAllProductReviewsBySpecificProduct() {
+        //Given
+        ArrayList<ProductReview> arr = new ArrayList<>();
+        arr.add(productReviewMock.get(0));
+        arr.add(productReviewMock.get(1));
+        //When
+        when(productReviewRepository.findAllByProductId(eq(1))).thenReturn(new ArrayList<>());
+        when(productReviewRepository.findAllByProductId(eq(2))).thenReturn(arr);
+        //Then
+        List<ProductReviewResponse> products = productReviewService.findByProductId(1);
+        verify(productReviewRepository,times(1)).findAllByProductId(1);
+        assertEquals(0, products.size());
+
+        products = productReviewService.findByProductId(2);
+        verify(productReviewRepository,times(1)).findAllByProductId(2);
+        assertEquals(2, products.size());
     }
-//    @DisplayName("Find product reviews by product id")
-//    @Test
-//    public void testFindAllProductReviewsBySpecificProduct() {
-//        //Given
-//        ArrayList<ProductReview> arr = new ArrayList<>();
-//        arr.add(productReviewMock.get(0));
-//        arr.add(productReviewMock.get(1));
-//        //When
-//        when(productReviewRepository.findAllByProductId(eq(1))).thenReturn(new ArrayList<>());
-//        when(productReviewRepository.findAllByProductId(eq(2))).thenReturn(arr);
-//        //Then
-//        List<ProductReviewResponse> products = productReviewService.findByProductId(1);
-//        verify(productReviewRepository,times(1)).findAllByProductId(1);
-//        assertEquals(0, products.size());
-//
-//        products = productReviewService.findByProductId(2);
-//        verify(productReviewRepository,times(1)).findAllByProductId(2);
-//        assertEquals(2, products.size());
-//    }
 
     @DisplayName("Find average product review score")
     @Test
@@ -157,10 +151,11 @@ class ProductReviewTest {
     @Test
     public void findProductByScore(){
         //When
-        when(productReviewRepository.findAllByProductScore(anyInt(), anyInt())).thenReturn(new ArrayList<>());
+        when(productReviewRepository.findAllByProductScore(999, 5)).thenReturn(new ArrayList<>());
         //Then
         List<ProductReviewResponse> list = productReviewService.findProductByScore(999, 5);
         verify(productReviewRepository,times(1)).findAllByProductScore(999,5);
+
     }
 
     @DisplayName("Can post review or not")
@@ -172,10 +167,9 @@ class ProductReviewTest {
         productReviewService.canPost(999, 999);
         verify(productReviewRepository, times(1)).canPost(999,999);
     }
-    @DisplayName("Change exsting product review")
+    @DisplayName("Change existing product review")
     @Test
     public void save(){
-
         when(productReviewRepository.canPost(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(productReviewRepository.save(any(ProductReview.class))).thenReturn(new ProductReview());
         when(productRepository.findActiveById(anyInt())).thenReturn(Optional.of(new Product()));
@@ -183,6 +177,7 @@ class ProductReviewTest {
         verify(productReviewRepository, times(1)).canPost(anyInt(), anyInt());
         verify(productReviewRepository, times(1)).save(any(ProductReview.class));
         assertNotNull(p);
+
     }
     @DisplayName("Delete By Id")
     @Test
